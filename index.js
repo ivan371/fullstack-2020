@@ -1,19 +1,32 @@
 const postKey = "post";
 
-function posts() {
+async function posts() {
   const postContainer = document.querySelector(".post-wrapper");
-  const posts = JSON.parse(window.sessionStorage.getItem(postKey));
+  let posts;
+
+  try {
+    const response = await fetch("http://localhost:3000/posts", {
+      headers: {
+        "Content-Type": "Application/json",
+      },
+    });
+    posts = await response.json();
+  } catch (err) {
+    console.log(err);
+  }
 
   posts.forEach(function (post) {
     const postNode = document.createElement("div");
     const firstNode = postContainer.firstChild;
+
     postNode.className = "post";
 
     postNode.innerHTML = `
+    <a href="post.html?post=${post.id}">
     <div class="post-title">
     <h2>${post.title}</h2>
     <div class="post-title__date">
-      <p>2 декабря 2020</p>
+      <p>${post.date}</p>
     </div>
   </div>
   <div>
@@ -24,7 +37,7 @@ function posts() {
   <div class="post-footer">
     <img class="post-footer__image" src="images/me.jpg" />
     <p class="post-footer__author">Нагайко Иван</p>
-  </div>`;
+  </div></a>`;
     postContainer.insertBefore(postNode, firstNode);
   });
 }

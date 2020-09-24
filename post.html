@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fullstack-2020</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, minimal-ui, user-scalable=no"
+    />
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="modal modal-hidden">
+      <div class="modal__inner">
+        <div class="post">
+          <form>
+            <h3>Редактировать пост</h3>
+            <div class="form-wrapper">
+              <div class="form-item">
+                <label><p>Название</p></label>
+                <input type="text" name="title"></input> 
+              </div>
+              <div class="form-item">
+                <label><p>Описание</p></label>
+                <input type="text" name="description"></input>
+              </div>
+            </div>
+            <button type="submit" class="form-button">Разместить</button>
+          </form>
+          </div>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="left-block">
+        <a href="post-create.html">
+          <button>Разместить пост</button>
+        </a>
+        <a href="index.html">
+          <button>На главную</button>
+        </a>
+      </div>
+      <div class="center-block">
+        <div class="post-wrapper"></div>
+      </div>
+      <div class="right-block">правый блок</div>
+    </div>
+    <script type="text/javascript" src="post.js"></script>
+  </body>
+</html>

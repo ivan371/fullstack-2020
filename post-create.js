@@ -7,15 +7,25 @@ function postCreate() {
 
   const post = {};
 
-  button.addEventListener("click", function (event) {
+  button.addEventListener("click", async function (event) {
     event.preventDefault();
     inputs.forEach(function (input) {
       post[input.name] = input.value;
     });
 
     postList.push(post);
+    const date = new Date();
+    post.date =
+      date.getDate() + " " + date.getMonth() + " " + date.getFullYear();
 
-    window.sessionStorage.setItem(postKey, JSON.stringify(postList));
+    await fetch("http://localhost:3000/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(post),
+    });
+
     window.location.href = "index.html";
   });
 }
