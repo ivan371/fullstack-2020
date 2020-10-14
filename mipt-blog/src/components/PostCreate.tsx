@@ -1,22 +1,26 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Layout from "./Layout";
 
-const PostCreate = (props: any) => {
-  function postCreate() {
-    const button = document.querySelector(".form-button");
-    const inputs = document.querySelectorAll("input");
+const PostCreate = () => {
+  const history = useHistory();
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
 
-    const post = {} as any;
-
-    button!.addEventListener("click", async function (event) {
+  const handleSubmit = React.useCallback(
+    async (event: React.SyntheticEvent) => {
       event.preventDefault();
-      inputs.forEach(function (input) {
-        post![input.name] = input.value;
-      });
-
       const date = new Date();
-      post.date =
-        date.getDate() + " " + date.getMonth() + " " + date.getFullYear();
+
+      if (!title || !description) {
+        return;
+      }
+
+      const post: Omit<IPost, "id"> = {
+        date: date.getDate() + " " + date.getMonth() + " " + date.getFullYear(),
+        title,
+        description,
+      };
 
       await fetch("http://localhost:3000/posts", {
         method: "POST",
@@ -26,49 +30,51 @@ const PostCreate = (props: any) => {
         body: JSON.stringify(post),
       });
 
-      props.history.push("/");
-    });
-  }
-
-  React.useEffect(() => {
-    postCreate();
-  }, []);
+      history.push("/");
+    },
+    []
+  );
 
   return (
-    <div className="wrapper">
-      <div className="left-block">
-        <Link to="/">
-          <button>На главную</button>
-        </Link>
-      </div>
-      <div className="center-block">
-        <div className="post">
-          <form>
-            <h3>Разместить пост</h3>
-            <div className="form-wrapper">
-              <div className="form-item">
-                <label>
-                  <p>Название</p>
-                </label>
-                <input type="text" name="title"></input>
-              </div>
-              <div className="form-item">
-                <label>
-                  <p>Описание</p>
-                </label>
-                <input type="text" name="description"></input>
-              </div>
+    <Layout>
+      <div className="post">
+        <form>
+          <h3>Разместить пост</h3>
+          <div className="form-wrapper">
+            <div className="form-item">
+              <label>
+                <p>Название</p>
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={title}
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                }}
+              ></input>
             </div>
-            <button type="submit" className="form-button">
-              Разместить
-            </button>
-          </form>
-        </div>
-        <div className="post-wrapper"></div>
+            <div className="form-item">
+              <label>
+                <p>Описание</p>
+              </label>
+              <input
+                type="text"
+                name="description"
+                value={description}
+                onChange={(event) => {
+                  setDescription(event.target.value);
+                }}
+              ></input>
+            </div>
+          </div>
+          <button type="submit" className="form-button" onClick={handleSubmit}>
+            Разместить
+          </button>
+        </form>
       </div>
-      <div className="right-block">правый блок</div>
-    </div>
+    </Layout>
   );
 };
 
-export default withRouter(PostCreate);
+export default PostCreate;
