@@ -1,21 +1,23 @@
 import React from "react";
+import { useDispatch} from 'react-redux'
+import {closeModal} from '../actions/modal'
 
 interface IModalProps {
   isModalOpen: boolean;
-  setIsModalOpen: (isModalOpen: boolean) => void;
 }
 
 const Modal: React.FC<IModalProps> = ({
   children,
-  isModalOpen,
-  setIsModalOpen,
+  isModalOpen
 }) => {
+  const dispatch = useDispatch()
+
   if (!isModalOpen) {
     return null;
   }
 
   return (
-    <div className="modal" onClick={() => setIsModalOpen(false)}>
+    <div className="modal" onClick={() => dispatch(closeModal())}>
       <div
         className="modal__inner"
         onClick={(event) => event.stopPropagation()}

@@ -1,36 +1,27 @@
 import React from "react";
+import {useDispatch, useSelector} from 'react-redux'
 import Layout from "./Layout";
 import PostItem from "./PostItem";
+import {fetchPosts} from '../actions/posts'
 
 const Main: React.FC = () => {
-  const [postList, setPostList] = React.useState<IPost[]>([]);
-
-  async function posts() {
-    let posts;
-
-    try {
-      const response = await fetch("http://localhost:3000/posts", {
-        headers: {
-          "Content-Type": "Application/json",
-        },
-      });
-      posts = await response.json();
-
-      setPostList(posts);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const dispatch = useDispatch()
+  const {postList, isLoading} = useSelector((state: State) => state.post)
 
   React.useEffect(() => {
-    posts();
+    dispatch(fetchPosts())
   }, []);
+
+  if (isLoading) {
+    return <div className="loader">Loading...</div>
+  }
+
 
   return (
     <Layout>
       <div className="post-wrapper">
-        {postList.map((post) => (
-          <PostItem post={post} key={post.id} />
+        {postList.map((postId) => (
+          <PostItem postId={postId} key={postId} />
         ))}
       </div>
     </Layout>

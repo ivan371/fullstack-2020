@@ -1,19 +1,23 @@
 import React from "react";
+import {useSelector, useDispatch} from 'react-redux'
 import { useParams } from "react-router-dom";
 import PostEdit from "./PostEdit";
 import PostDelete from "./PostDelete";
 import Layout from "./Layout";
 import Modal from "./Modal";
+import {openModal, closeModal} from '../actions/modal'
+import {ModalNames} from '../constants/modalNames'
 
 const Post: React.FC = () => {
   const params = useParams<{ postId: string }>();
-  const [isPostEditModalOpen, setIsPostEditModalOpen] = React.useState(false);
-  const [isPostDeleteModalOpen, setIsPostDeleteModalOpen] = React.useState(
-    false
-  );
-  const [post, setPost] = React.useState<IPost | null>();
-
+  const dispatch = useDispatch()
   const postId = params.postId;
+
+  const modalName = useSelector((state: State) => state.modal.modalName)
+  const oldPost = useSelector((state: State) => state.post.posts[postId])
+  const [post, setPost] = React.useState<IPost | null>(oldPost);
+
+  
 
   const fetchPost = async () => {
     const response = await fetch(`http://localhost:3000/posts/${postId}`);
@@ -23,24 +27,20 @@ const Post: React.FC = () => {
   };
 
   React.useEffect(() => {
-    fetchPost();
+    if (!oldPost) {
+      fetchPost();
+    }
   }, []);
 
   return (
     <Layout>
-      <Modal
-        isModalOpen={isPostEditModalOpen}
-        setIsModalOpen={setIsPostEditModalOpen}
-      >
+      <Modal isModalOpen={modalName === ModalNames.EDIT}>
         <PostEdit />
       </Modal>
-      <Modal
-        isModalOpen={isPostDeleteModalOpen}
-        setIsModalOpen={setIsPostDeleteModalOpen}
-      >
+      <Modal isModalOpen={modalName === ModalNames.DELETE}>
         <PostDelete
           postId={postId}
-          onCancel={() => setIsPostDeleteModalOpen(false)}
+          onCancel={() => dispatch(closeModal())}
         />
       </Modal>
       <div className="post-wrapper">
@@ -61,13 +61,13 @@ const Post: React.FC = () => {
             </div>
             <button
               className="edit-button"
-              onClick={() => setIsPostEditModalOpen(true)}
+              onClick={() => dispatch(openModal(ModalNames.EDIT))}
             >
               Редактировать пост
             </button>
             <button
               className="delete-button"
-              onClick={() => setIsPostDeleteModalOpen(true)}
+              onClick={() => dispatch(openModal(ModalNames.DELETE))}
             >
               Удалить пост
             </button>

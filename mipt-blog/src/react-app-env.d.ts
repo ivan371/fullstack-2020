@@ -6,3 +6,19 @@ interface IPost {
   date: string;
   id: number;
 }
+
+interface ModalState {
+  modalName: string
+}
+
+interface PostState {
+  posts: any
+  postList: []
+  isLoading: boolean
+  isError: boolean
+}
+
+interface State {
+  modal: ModalState
+  post: PostState
+}

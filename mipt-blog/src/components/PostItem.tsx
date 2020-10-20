@@ -1,27 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {useSelector, useDispatch} from 'react-redux'
 import PostDelete from "./PostDelete";
 import Modal from "./Modal";
+import {openModal, closeModal} from '../actions/modal'
+import {ModalNames} from '../constants/modalNames'
 
 interface IProps {
-  post: IPost;
+  postId: string;
 }
 
 const PostItem: React.FC<IProps> = (props) => {
-  const { post } = props;
-  const [isPostDeleteModalOpen, setIsPostDeleteModalOpen] = React.useState(
-    false
-  );
+  const { postId } = props;
+  const dispatch = useDispatch()
+  const post = useSelector((state: State) => state.post.posts[postId])
+  const modalName = useSelector((state: State) => state.modal.modalName)
 
   return (
     <div className="post">
-      <Modal
-        isModalOpen={isPostDeleteModalOpen}
-        setIsModalOpen={setIsPostDeleteModalOpen}
-      >
+      <Modal isModalOpen={modalName === ModalNames.DELETE}>
         <PostDelete
           postId={post.id.toString()}
-          onCancel={() => setIsPostDeleteModalOpen(false)}
+          onCancel={() => dispatch(closeModal())}
         />
       </Modal>
       <Link to={"/post/" + post.id}>
@@ -41,7 +41,7 @@ const PostItem: React.FC<IProps> = (props) => {
             className="post-footer__delete-button"
             onClick={(event) => {
               event.preventDefault();
-              setIsPostDeleteModalOpen(true);
+              dispatch(openModal(ModalNames.DELETE));
             }}
           >
             Удалить пост
@@ -52,4 +52,4 @@ const PostItem: React.FC<IProps> = (props) => {
   );
 };
 
-export default PostItem;
+export default PostItem
