@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h2>{{object.title}}</h2>
+    <h3>{{object.description}}</h3>
+    <p>
+      {% for comment in comments %}
+        {{comment.text}}
+      {% endfor %}
+    </p>
+  </body>
+</html>

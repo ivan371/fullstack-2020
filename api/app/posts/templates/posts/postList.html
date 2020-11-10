@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fullstack-2020</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, minimal-ui, user-scalable=no"
+    />
+    {% load static %}
+    <link href="{% static "css/styles.css" %}" type="text/css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="left-block">
+        <a href="post-create.html">
+          <button>Разместить пост</button>
+        </a>
+      </div>
+      <div class="center-block">
+        <div class="post-wrapper">
+          {% for post in posts %}
+    <a href="/post/{{post.pk}}">{{post.title}}</a>
+    <h2>{{post.description}}</h2>
+    {% endfor %}
+        </div>
+      </div>
+      <div class="right-block">правый блок</div>
+    </div>
+    {% comment %} <script type="text/javascript" src="index.js"></script> {% endcomment %}
+  </body>
+</html>
