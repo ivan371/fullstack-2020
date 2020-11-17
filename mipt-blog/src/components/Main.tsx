@@ -12,7 +12,7 @@ const Main: React.FC = () => {
     dispatch(fetchPosts())
   }, []);
 
-  if (isLoading) {
+  if (isLoading || !postList) {
     return <div className="loader">Loading...</div>
   }
 

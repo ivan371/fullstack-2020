@@ -31,11 +31,7 @@ export function fetchPosts() {
     try {
       dispatch(postsFetch())
       
-      const response = await fetch("http://localhost:3000/posts", {
-        headers: {
-          "Content-Type": "Application/json",
-        },
-      });
+      const response = await fetch("http://localhost:3000/posts");
 
       posts = await response.json();
 

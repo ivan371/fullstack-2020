@@ -18,10 +18,19 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.utils.translation import ugettext_lazy as _
+from rest_framework import routers
+from posts.views import PostViewSet, MyPostViewSet
+from comment.views import CommentViewSet
+
+router = routers.DefaultRouter()
+router.register(r'posts', PostViewSet)
+router.register(r'my_posts', MyPostViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('post/', include('posts.urls', namespace='post'))
+    path('post/', include('posts.urls', namespace='post')),
+    path('api/', include(router.urls)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

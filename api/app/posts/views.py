@@ -1,8 +1,11 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, Http404
+from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView
+from rest_framework import viewsets, mixins, permissions
 from .models import Post
 from datetime import datetime
 from comment.models import Comment
+from .serializers import PostSerializer
 
 def post_list(request):
   posts = Post.objects.all()
@@ -38,4 +41,25 @@ class PostCreate(CreateView):
 
   def get_success_url(self):
     return reverse('post:list')
+  
+
+class PostViewSet(mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+  queryset = Post.objects.all()
+  serializer_class = PostSerializer
+
+class MyPostViewSet(viewsets.ModelViewSet):
+  queryset = Post.objects.all()
+  serializer_class = PostSerializer
+  permission_classes = [permissions.IsAuthenticated]
+
+  def perform_create(self, serializer):
+    serializer.save(owner_id=self.request.user)
+
+  def get_queryset(self):
+    return Post.objects.filter(owner=self.request.user)
+  
+
+  
   
