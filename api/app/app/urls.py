@@ -21,6 +21,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import routers
 from posts.views import PostViewSet, MyPostViewSet
 from comment.views import CommentViewSet
+from .views import UserViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -30,6 +31,7 @@ router = routers.DefaultRouter()
 router.register(r'posts', PostViewSet)
 router.register(r'my_posts', MyPostViewSet)
 router.register(r'comments', CommentViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

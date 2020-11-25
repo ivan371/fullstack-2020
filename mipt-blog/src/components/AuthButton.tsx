@@ -5,11 +5,13 @@ import { openModal, closeModal } from '../actions/modal'
 import {signOut} from '../actions/auth'
 import Modal from './Modal'
 import AuthForm from './AuthForm'
+import RegisterForm from './RegisterForm'
 
 const AuthButton: React.FunctionComponent = () => {
   const modalName = useSelector((state: State) => state.modal.modalName)
   const dispatch = useDispatch()
   const [isLogin, setIsLogin] = useState(Boolean(window.localStorage.getItem('auth')))
+  const [isAuthForm, setIsAuthForm] = useState(true)
 
   const handleSignOut = () => {
     setIsLogin(false)
@@ -28,7 +30,10 @@ const AuthButton: React.FunctionComponent = () => {
       <button onClick={handleSignOut}>Выйти</button>
     }  
       <Modal isModalOpen={modalName === ModalNames.AUTH}>
-        <AuthForm onSuccess={handeSignIn}/>
+        {isAuthForm ? 
+          <AuthForm onSuccess={handeSignIn} onRegisterButtonClick={() => setIsAuthForm(false)}/> 
+          : <RegisterForm onSuccess={handeSignIn} />
+        }
       </Modal>
     </>
   )

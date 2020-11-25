@@ -1,31 +1,27 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import {signIn} from '../actions/auth'
+import {signUp} from '../actions/auth'
 
-interface IAuthFormProps {
+interface IRegisterFormProps {
   onSuccess: () => void
-  onRegisterButtonClick: () => void
 }
 
-const AuthForm: React.FunctionComponent<IAuthFormProps> = ({onSuccess, onRegisterButtonClick}) => {
+const RegisterForm: React.FC<IRegisterFormProps> = ({ onSuccess }) => {
+  const dispatch = useDispatch()
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const dispatch = useDispatch()
+  const [email, setEmail] = React.useState("");
+  const [isError, setIsError] = React.useState(false)
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
 
-    await dispatch(signIn(login, password))
-    onSuccess()
-  }
-
-  const handelRegisterButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    onRegisterButtonClick()
+    await dispatch(signUp(login, email, password, () => setIsError(true), onSuccess))
   }
 
   return  (
     <form>
-    <h3>Авторизация</h3>
+    <h3>Регистрация</h3>
     <div className="form-wrapper">
       <div className="form-item">
         <label>
@@ -37,6 +33,19 @@ const AuthForm: React.FunctionComponent<IAuthFormProps> = ({onSuccess, onRegiste
           value={login}
           onChange={(event) => {
             setLogin(event.target.value);
+          }}
+        ></input>
+      </div>
+      <div className="form-item">
+        <label>
+          <p>E-mail</p>
+        </label>
+        <input
+          type="text"
+          name="email"
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value);
           }}
         ></input>
       </div>
@@ -55,12 +64,10 @@ const AuthForm: React.FunctionComponent<IAuthFormProps> = ({onSuccess, onRegiste
       </div>
     </div>
     <button type="submit" className="form-button" onClick={handleSubmit}>
-      Войти
+      Зарегистрироваться
     </button>
-    <button className="form-button" onClick={handelRegisterButtonClick}>
-        Зарегистрироваться
-    </button>
+    {isError && <div>Произошла ошибка при регистрации!!</div>}
   </form>)
 }
 
-export default AuthForm
+export default RegisterForm

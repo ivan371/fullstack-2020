@@ -7,9 +7,15 @@ import {fetchPosts} from '../actions/posts'
 const Main: React.FC = () => {
   const dispatch = useDispatch()
   const {postList, isLoading} = useSelector((state: State) => state.post)
+  const [page, setPage] = React.useState<number>(1)
+
+  const onFetchPosts = () => {
+    dispatch(fetchPosts(page))
+    setPage(page + 1)
+  }
 
   React.useEffect(() => {
-    dispatch(fetchPosts())
+    onFetchPosts()
   }, []);
 
   if (isLoading || !postList) {
@@ -23,6 +29,7 @@ const Main: React.FC = () => {
         {postList.map((postId) => (
           <PostItem postId={postId} key={postId} />
         ))}
+         <button className="form-button" onClick={onFetchPosts}>Показать еще</button>
       </div>
     </Layout>
   );

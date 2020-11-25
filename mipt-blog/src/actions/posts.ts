@@ -25,14 +25,28 @@ function postsFetchError() {
   }
 }
 
-export function fetchPosts() {
+export function fetchPosts(page: number) {
   return async (dispatch: Dispatch) => {
     let posts;
 
     try {
       dispatch(postsFetch())
       
-      const response = await ApiClient("posts/");
+      let response = await ApiClient(`posts/?page=${page}`);
+
+      if (response.status !== 200) {
+        const refresh = window.localStorage.getItem('refresh')
+        response = await ApiClient("token/refresh/", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "Application/json",
+          }, body: JSON.stringify({ refresh })
+        });
+        const data = await response.json()
+        
+        window.localStorage.setItem('auth', data.access)
+        response = await ApiClient(`posts/?page=${page}`);
+      }
 
       posts = await response.json();
 
