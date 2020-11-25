@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { ApiClient } from '../services'
 
 interface IPostDeleteProps {
   postId: string;
@@ -10,7 +11,7 @@ const PostDelete: React.FC<IPostDeleteProps> = ({ postId, onCancel }) => {
   const history = useHistory();
 
   const handlePostDelete = async () => {
-    await fetch(`http://localhost:3000/posts/${postId}`, {
+    await ApiClient(`posts/${postId}/`, {
       method: "DELETE",
     });
     history.push("/");

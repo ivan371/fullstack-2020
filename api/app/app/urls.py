@@ -21,6 +21,10 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import routers
 from posts.views import PostViewSet, MyPostViewSet
 from comment.views import CommentViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = routers.DefaultRouter()
 router.register(r'posts', PostViewSet)
@@ -30,7 +34,9 @@ router.register(r'comments', CommentViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('post/', include('posts.urls', namespace='post')),
-    path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/', include(router.urls))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

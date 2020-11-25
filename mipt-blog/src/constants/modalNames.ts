@@ -1,4 +1,5 @@
 export enum ModalNames {
   DELETE = 'delete',
-  EDIT = 'edit'
+  EDIT = 'edit',
+  AUTH = 'auth'
 }

@@ -5,8 +5,9 @@ import PostEdit from "./PostEdit";
 import PostDelete from "./PostDelete";
 import Layout from "./Layout";
 import Modal from "./Modal";
-import {openModal, closeModal} from '../actions/modal'
-import {ModalNames} from '../constants/modalNames'
+import { openModal, closeModal } from '../actions/modal'
+import { ApiClient } from '../services/ApiClient'
+import { ModalNames } from '../constants/modalNames'
 
 const Post: React.FC = () => {
   const params = useParams<{ postId: string }>();
@@ -20,7 +21,7 @@ const Post: React.FC = () => {
   
 
   const fetchPost = async () => {
-    const response = await fetch(`http://localhost:3000/posts/${postId}`);
+    const response = await ApiClient(`posts/${postId}/`, { method: 'GET' });
     const postData: IPost = await response.json();
 
     setPost(postData);

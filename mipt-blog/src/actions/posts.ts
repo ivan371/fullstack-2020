@@ -1,5 +1,6 @@
 import {Dispatch} from 'redux'
 import {postsNormalize} from '../schema/posts'
+import { ApiClient } from '../services'
 
 export const POSTS_FETCH = 'POSTS_FETCH'
 export const POSTS_FETCH_SUCCESS = 'POSTS_FETCH_SUCCESS'
@@ -31,11 +32,11 @@ export function fetchPosts() {
     try {
       dispatch(postsFetch())
       
-      const response = await fetch("http://localhost:3000/posts");
+      const response = await ApiClient("posts/");
 
       posts = await response.json();
 
-      dispatch(postsFetchSuccess(postsNormalize(posts)))
+      dispatch(postsFetchSuccess(postsNormalize(posts.results)))
 
     } catch(err) {
       dispatch(postsFetchError())

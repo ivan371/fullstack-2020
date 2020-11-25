@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthButton from './AuthButton'
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -14,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
           </Link>
         </div>
         <div className="center-block">{children}</div>
-        <div className="right-block">правый блок</div>
+        <div className="right-block"><AuthButton /></div>
       </div>
     </div>
   );

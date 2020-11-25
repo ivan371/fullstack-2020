@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "./Layout";
+import {ApiClient} from '../services'
 
 const PostCreate = () => {
   const history = useHistory();
@@ -22,7 +23,7 @@ const PostCreate = () => {
         description,
       };
 
-      await fetch("http://localhost:3000/posts", {
+      await ApiClient("posts/", {
         method: "POST",
         headers: {
           "Content-Type": "Application/json",
