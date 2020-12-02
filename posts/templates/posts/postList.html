@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fullstack-2020</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, minimal-ui, user-scalable=no"
+    />
+    {% load static %}
+    <link href="{% static "css/styles.css" %}" type="text/css" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="left-block">
+        <a href="/post/create">
+          <button>Разместить пост</button>
+        </a>
+      </div>
+      <div class="center-block">
+        <div class="post-wrapper">
+          {% for post in posts %}
+          <div class="post">
+            <a href="/post/{{post.pk}}">
+              <div class="post-title">
+                <h2>{{post.title}}</h2>
+                 <div class="post-title__date">
+                    {{post.date}}
+                 </div>
+              </div>
+            </a>
+            <div>
+              <p>
+                {{post.description}}
+              </p>
+            </div>
+            <div class="post-footer">
+              <img class="post-footer__image" src="images/me.jpg" />
+              <p class="post-footer__author">Нагайко Иван</p>
+            </div>
+          </div>
+    {% endfor %}
+        </div>
+      </div>
+      <div class="right-block">правый блок</div>
+    </div>
+    {% comment %} <script type="text/javascript" src="index.js"></script> {% endcomment %}
+  </body>
+</html>
